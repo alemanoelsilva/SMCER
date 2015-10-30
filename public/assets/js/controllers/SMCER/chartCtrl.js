@@ -22,8 +22,8 @@ app.controller('ChartOpenHourCtrl', ["$scope", "$state", "SweetAlert", "Circuit"
 			$scope.start = new Date();
 			$scope.end = new Date();
 
-			var dataInicial = formatDate($scope.start) + " " + "00:00:00";
-			var dataFinal = formatDate($scope.end) + " " + "23:59:59";
+			var dataInicial = formatDate($scope.start) + " " + "00:00:01";
+			var dataFinal = formatDate($scope.end) + " " + "23:00:00";
 
 			HoraFechada.get({
 					dataInicial: dataInicial,
@@ -89,8 +89,9 @@ app.controller('ChartOpenHourCtrl', ["$scope", "$state", "SweetAlert", "Circuit"
 			if (!circuito)
 				circuito = $scope.circuito;
 
-			var dataInicial = formatDate($scope.start) + " " + "00:00:00";
-			var dataFinal = formatDate($scope.end) + " " + "23:59:59";
+			var dataInicial = formatDate($scope.start) + " " + "01:00:01";
+			$scope.end.setDate($scope.end.getDate()+1);
+			var dataFinal = formatDate($scope.end) + " " + "01:00:01";
 			var circuito = circuito.id;
 
 			HoraFechada.get({
@@ -228,7 +229,6 @@ app.controller('ChartNowCtrl', ["$scope", "Instantaneo", "Circuit", function($sc
 					$scope.data.datasets[2].data.splice(0, 1);
 					$scope.data.datasets[3].data.splice(0, 1);
 					$scope.data.datasets[4].data.splice(0, 1);
-					$scope.data.datasets[5].data.splice(0, 1);
 				}
 
 				$scope.data.labels.push(data[0].hora);
@@ -237,7 +237,6 @@ app.controller('ChartNowCtrl', ["$scope", "Instantaneo", "Circuit", function($sc
 				$scope.data.datasets[data[2].idCircuito-1].data.push(data[2].potencia);
 				$scope.data.datasets[data[3].idCircuito-1].data.push(data[3].potencia);			
 				$scope.data.datasets[data[4].idCircuito-1].data.push(data[4].potencia);
-				$scope.data.datasets[data[5].idCircuito-1].data.push(data[5].potencia);
 
 				$scope.data0 = {
 					labels : $scope.data.labels,
@@ -259,11 +258,6 @@ app.controller('ChartNowCtrl', ["$scope", "Instantaneo", "Circuit", function($sc
 					labels : $scope.data.labels,
 					datasets : new Array($scope.data.datasets[4])
 				};
-				$scope.data5 = {
-					labels : $scope.data.labels,
-					datasets : new Array($scope.data.datasets[5])
-				};
-				
 			},
 			function(erro) {
 				console.log('erro', erro);
@@ -319,15 +313,6 @@ app.controller('ChartNowCtrl', ["$scope", "Instantaneo", "Circuit", function($sc
 			pointStrokeColor: '#fff',
 			pointHighlightFill: '#fff',
 			pointHighlightStroke: 'rgba(55,236,236,1)',
-			data: [0]
-		}, {
-			label: '',
-			fillColor: 'rgba(194,55,236,0.1)',
-			strokeColor: 'rgba(194,55,236,1)',
-			pointColor: 'rgba(194,55,236,1)',
-			pointStrokeColor: '#fff',
-			pointHighlightFill: '#fff',
-			pointHighlightStroke: 'rgba(194,55,236,1)',
 			data: [0]
 		}]
 	};

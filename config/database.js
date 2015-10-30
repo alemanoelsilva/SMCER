@@ -1,5 +1,5 @@
 var Sequelize = require('sequelize');
-var connection = new Sequelize('tcc', 'root', 'root', {
+var connection = new Sequelize('tcc', 'root', 'admin123', {
 	host: 'localhost'
 	, port: 3306
 	, dialect: 'mysql'
