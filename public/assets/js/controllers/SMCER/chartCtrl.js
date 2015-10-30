@@ -22,8 +22,10 @@ app.controller('ChartOpenHourCtrl', ["$scope", "$state", "SweetAlert", "Circuit"
 			$scope.start = new Date();
 			$scope.end = new Date();
 
-			var dataInicial = formatDate($scope.start) + " " + "00:00:01";
-			var dataFinal = formatDate($scope.end) + " " + "23:00:00";
+			var dataInicial = formatDate($scope.start) + " " + "01:00:01";
+			var dataFinalCustom = new Date($scope.end);
+			dataFinalCustom.setDate(dataFinalCustom.getDate()+1);
+			var dataFinal = formatDate(dataFinalCustom) + " " + "01:00:01";
 
 			HoraFechada.get({
 					dataInicial: dataInicial,
@@ -90,8 +92,9 @@ app.controller('ChartOpenHourCtrl', ["$scope", "$state", "SweetAlert", "Circuit"
 				circuito = $scope.circuito;
 
 			var dataInicial = formatDate($scope.start) + " " + "01:00:01";
-			$scope.end.setDate($scope.end.getDate()+1);
-			var dataFinal = formatDate($scope.end) + " " + "01:00:01";
+			var dataFinalCustom = new Date($scope.end);
+			dataFinalCustom.setDate(dataFinalCustom.getDate()+1);
+			var dataFinal = formatDate(dataFinalCustom) + " " + "01:00:01";
 			var circuito = circuito.id;
 
 			HoraFechada.get({
