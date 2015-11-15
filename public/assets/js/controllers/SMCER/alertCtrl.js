@@ -104,7 +104,7 @@ app.controller('AlertEditCtrl', ["$scope", "$rootScope", "$state", "$stateParams
 
     $scope.updateAlert = function() {
         $scope.alert.usuario = {
-            id: JSON.parse(localStorage.setItem("userSession")).id
+            id: JSON.parse(localStorage.getItem("userSession")).id
         };
         $scope.alert.$update({id: $scope.alert.id},
             function (alert){

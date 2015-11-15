@@ -47,7 +47,10 @@ module.exports =  function (app){
 						, where: { id: _id }
 					}],
 					where: connection.and({ 
-						dataHora: { $between: [dataInicial, dataFinal] } 
+						dataHora: {
+						   	$gte: dataInicial,
+						  	$lte: dataFinal    
+						}
 					})
 				}
 			)
@@ -58,7 +61,7 @@ module.exports =  function (app){
 				    consumo.label.push(hora);
 				    consumo.data.push(potencia);
 				};
-				console.log('SELECT', consumo)
+				console.log('****************************SELECT', consumo)
 				resp.json(consumo);
 				resp.status(204).end();
 			}, function (error){
