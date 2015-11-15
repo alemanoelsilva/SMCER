@@ -1,0 +1,6 @@
+cd ~/Projects/SMCER;
+git pull
+bower install
+sudo npm install -g
+sudo killall node
+nodemon server.js
