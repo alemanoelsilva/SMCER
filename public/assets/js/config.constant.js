@@ -29,6 +29,7 @@ app.constant('JS_REQUIRES', {
 
         //*** Controllers
         'authCtrl' : 'assets/js/controllers/SMCER/authCtrl.js',
+        'forgotCtrl' : 'assets/js/controllers/SMCER/forgotCtrl.js',
         'userCtrl' : 'assets/js/controllers/SMCER/userCtrl.js',
         'circuitCtrl' : 'assets/js/controllers/SMCER/circuitCtrl.js',
         'alertCtrl' : 'assets/js/controllers/SMCER/alertCtrl.js',

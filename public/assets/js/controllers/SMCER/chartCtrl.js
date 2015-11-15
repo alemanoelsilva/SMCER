@@ -17,6 +17,13 @@ app.controller('ChartOpenHourCtrl', ["$scope", "$state", "SweetAlert", "Circuit"
 
 		$scope.init();
 
+		$scope.exibicoes = [
+			{nome: "Hora"},
+			{nome : "Dia"}
+		];
+		$scope.exibicao = $scope.exibicoes[0];
+		
+
 		function gerarGraficoInicial() {
 
 			$scope.start = new Date();
@@ -84,6 +91,10 @@ app.controller('ChartOpenHourCtrl', ["$scope", "$state", "SweetAlert", "Circuit"
 			return ano + "-" + mes + "-" + dia;
 		};
 
+		$scope.genGrafico = function() {
+			grafico();
+		};
+
 		$scope.updateGrafic = function(circuito) {
 			if ((!$scope.start || !$scope.end) || ($scope.end < $scope.start))
 				return;
@@ -94,7 +105,7 @@ app.controller('ChartOpenHourCtrl', ["$scope", "$state", "SweetAlert", "Circuit"
 			var dataInicial = formatDate($scope.start) + " " + "01:00:01";
 			var dataFinalCustom = new Date($scope.end);
 			dataFinalCustom.setDate(dataFinalCustom.getDate()+1);
-			var dataFinal = formatDate(dataFinalCustom) + " " + "01:00:01";
+			var dataFinal = formatDate(dataFinalCustom) + " " + "02:00:01";
 			var circuito = circuito.id;
 
 			HoraFechada.get({
@@ -111,6 +122,49 @@ app.controller('ChartOpenHourCtrl', ["$scope", "$state", "SweetAlert", "Circuit"
 				});
 		};
 
+		function processExibicao() {
+
+			var qtdHoras = $scope.grafic.data.length;
+
+			if ($scope.exibicao.nome == "Hora") {
+				if ((qtdHoras / 24) >= 3) { // Maior que 3 dias
+					SweetAlert.swal("Exibição", "A exibição será alterada para (Dia), pois foi selecionado um período maior ou igual á 3 dias", "warning");	
+					$scope.exibicao = $scope.exibicoes[1]; // DIA
+				}
+			} else { // Dia
+				if (qtdHoras <= 24) { // Apenas um dia selecionado
+					SweetAlert.swal("Exibição", "A exibição será alterada para (Hora), pois foi selecionado um período igual á 1 dia", "warning");	
+					$scope.exibicao = $scope.exibicoes[0]; // HORA
+				} 
+			}
+
+			// Processa somente se foi selecionado o período de um dia
+			if ($scope.exibicao.nome == "Dia") {
+				var consumo = {
+					label: [],
+					data: []
+				};
+
+				var dia;
+
+				for (var i = 0; i < $scope.grafic.label.length; i++) {
+
+					var data = moment($scope.grafic.label[i], "DD-MM-YYYY HH:mm:ss").toDate();
+
+					if (data.getDate() == dia) {
+						consumo.data[consumo.data.length-1] += $scope.grafic.data[i];
+					} else {
+						consumo.label.push(data.getDate()+"/"+data.getMonth());
+						consumo.data.push($scope.grafic.data[i]);
+						dia = data.getDate();
+					}
+
+				}
+
+				 $scope.grafic = consumo;
+			}
+		};
+
 		function grafico() {
 
 			var sumWatts = 0;
@@ -119,10 +173,14 @@ app.controller('ChartOpenHourCtrl', ["$scope", "$state", "SweetAlert", "Circuit"
 				sumWatts += $scope.grafic.data[i];
 			}
 
-
 			if ($scope.grafic.data.length == 0) {
 				SweetAlert.swal("404 -Dados não encontrados", "Tente selecionar um outro período para visualizar o gráfico", "warning");
+			} else {
+				processExibicao();	
 			}
+
+			
+			
 			$scope.data = {
 				labels: $scope.grafic.label,
 				datasets: [{
@@ -170,7 +228,7 @@ app.controller('ChartOpenHourCtrl', ["$scope", "$state", "SweetAlert", "Circuit"
 			pointDotStrokeWidth: 1,
 
 			//Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-			pointHitDetectionRadius: 20,
+			pointHitDetectionRadius: 5,
 
 			//Boolean - Whether to show a stroke for datasets
 			datasetStroke: true,
@@ -354,7 +412,7 @@ app.controller('ChartNowCtrl', ["$scope", "Instantaneo", "Circuit", function($sc
 		pointDotStrokeWidth: 1,
 
 		//Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-		pointHitDetectionRadius: 20,
+		pointHitDetectionRadius: 5,
 
 		//Boolean - Whether to show a stroke for datasets
 		datasetStroke: true,

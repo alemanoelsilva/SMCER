@@ -54,6 +54,7 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         resolve: loadSequence('sweet-alert', 'oitozero.ngSweetAlert', 'authCtrl')
 	}).state('login.forgot', {
 	    url: '/forgot',
+        resolve: loadSequence('sweet-alert', 'oitozero.ngSweetAlert', 'forgotCtrl'),
 	    templateUrl: "assets/views/login_forgot.html"
 	}).state('login.registration', {
 	    url: '/registration',

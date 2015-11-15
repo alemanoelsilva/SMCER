@@ -13,4 +13,7 @@ module.exports = function(app){
     
     app.route('/usuarioLogado/:nome')
         .get(usuario.getUsuarioByNome);
+
+    app.route('/usuarios/email/forgot/:email')
+        .get(usuario.forgot);
 }

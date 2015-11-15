@@ -1,12 +1,12 @@
 <!-- start: FORGOT -->
-<div class="row">
+<div class="row" ng-controller='ForgotCtrl'>
 	<div class="main-login col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
 		<div class="logo">
 			<img ng-src="{{app.layout.logo}}" alt="{{app.name}}"/>
 		</div>
 		<!-- start: FORGOT BOX -->
 		<div class="box-forgot">
-			<form class="form-forgot">
+			<form class="form-forgot" name="Form" ng-submit='forgot(Form)' novalidate>
 				<fieldset>
 					<legend>
 						Esqueceu sua senha?
@@ -14,11 +14,13 @@
 					<p>
 						Entre com o seu e-mail para resetar a sua senha.
 					</p>
-					<div class="form-group">
-						<span class="input-icon">
-							<input type="email" class="form-control" name="email" placeholder="Email">
+					<div class="form-group" ng-class="{'has-error':Form.email.$dirty && Form.email.$invalid, 'has-success':Form.email.$valid}">
+                        <span class="input-icon">
+							<input type="email" class="form-control" name="email" placeholder="E-mail" ng-model='email' required />
 							<i class="fa fa-envelope-o"></i> </span>
-					</div>
+                        <span class="error text-small block" ng-if="Form.email.$dirty && Form.email.$invalid">Um e-mail válido é requerido!</span>
+                        <span class="success text-small" ng-if="Form.email.$valid">E-mail OK!</span>
+                    </div>
 					<div class="form-actions">
 						<a class="btn btn-primary btn-o" ui-sref="login.signin">
 							<i class="fa fa-chevron-circle-left"></i> Login
