@@ -28,7 +28,7 @@
 				<label>
 					Exibição
 				</label>
-				<ui-select ng-model="exibicao" ng-change="genGrafico()" theme="bootstrap">
+				<ui-select ng-model="exibicao" ng-change="genGrafico(exibicao)" theme="bootstrap">
 					<ui-select-match placeholder="Selecione">
 						{{$select.selected.nome}}
 					</ui-select-match>

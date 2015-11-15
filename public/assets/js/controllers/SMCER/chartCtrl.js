@@ -91,11 +91,12 @@ app.controller('ChartOpenHourCtrl', ["$scope", "$state", "SweetAlert", "Circuit"
 			return ano + "-" + mes + "-" + dia;
 		};
 
-		$scope.genGrafico = function() {
-			grafico();
+		$scope.genGrafico = function(exibicao) {
+			$scope.exibicao = exibicao;
+			$scope.updateGrafic(false, false);
 		};
 
-		$scope.updateGrafic = function(circuito) {
+		$scope.updateGrafic = function(circuito, validaExibicao) {
 			if ((!$scope.start || !$scope.end) || ($scope.end < $scope.start))
 				return;
 
@@ -108,6 +109,8 @@ app.controller('ChartOpenHourCtrl', ["$scope", "$state", "SweetAlert", "Circuit"
 			var dataFinal = formatDate(dataFinalCustom) + " " + "02:00:01";
 			var circuito = circuito.id;
 
+			var valid = validaExibicao;
+
 			HoraFechada.get({
 					dataInicial: dataInicial,
 					dataFinal: dataFinal,
@@ -115,27 +118,30 @@ app.controller('ChartOpenHourCtrl', ["$scope", "$state", "SweetAlert", "Circuit"
 				},
 				function(consumo) {
 					$scope.grafic = consumo;
-					grafico();
+					grafico(valid);
 				},
 				function(erro) {
 					console.log('erro', erro);
 				});
 		};
 
-		function processExibicao() {
+		function processExibicao(validaExibicao) {
 
-			var qtdHoras = $scope.grafic.data.length;
+			var qtdHoras = $scope.grafic.data.length
 
-			if ($scope.exibicao.nome == "Hora") {
-				if ((qtdHoras / 24) >= 3) { // Maior que 3 dias
-					SweetAlert.swal("Exibição", "A exibição será alterada para (Dia), pois foi selecionado um período maior ou igual á 3 dias", "warning");	
-					$scope.exibicao = $scope.exibicoes[1]; // DIA
+			if (validaExibicao == undefined || validaExibicao == true) {
+				if ($scope.exibicao.nome == "Hora") {
+					if ((qtdHoras / 24) >= 3) { // Maior que 3 dias
+						SweetAlert.swal("Exibição", "A exibição será alterada para (Dia), pois foi selecionado um período maior ou igual á 3 dias", "warning");	
+						$scope.exibicao = $scope.exibicoes[1]; // DIA
+					}
+				} else { // Dia
+					if (qtdHoras <= 24) { // Apenas um dia selecionado
+						SweetAlert.swal("Exibição", "A exibição será alterada para (Hora), pois foi selecionado um período igual á 1 dia", "warning");	
+						$scope.exibicao = $scope.exibicoes[0]; // HORA
+					} 
 				}
-			} else { // Dia
-				if (qtdHoras <= 24) { // Apenas um dia selecionado
-					SweetAlert.swal("Exibição", "A exibição será alterada para (Hora), pois foi selecionado um período igual á 1 dia", "warning");	
-					$scope.exibicao = $scope.exibicoes[0]; // HORA
-				} 
+
 			}
 
 			// Processa somente se foi selecionado o período de um dia
@@ -165,7 +171,7 @@ app.controller('ChartOpenHourCtrl', ["$scope", "$state", "SweetAlert", "Circuit"
 			}
 		};
 
-		function grafico() {
+		function grafico(validaExibicao) {
 
 			var sumWatts = 0;
 
@@ -176,7 +182,7 @@ app.controller('ChartOpenHourCtrl', ["$scope", "$state", "SweetAlert", "Circuit"
 			if ($scope.grafic.data.length == 0) {
 				SweetAlert.swal("404 -Dados não encontrados", "Tente selecionar um outro período para visualizar o gráfico", "warning");
 			} else {
-				processExibicao();	
+				processExibicao(validaExibicao);	
 			}
 
 			
