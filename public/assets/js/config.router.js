@@ -36,7 +36,7 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
     }).state('app.dashboard', {
         url: "/dashboard",
         templateUrl: "assets/views/dashboard.html",
-        resolve: loadSequence('jquery-sparkline', 'dashboardCtrl'),
+        resolve: loadSequence('dashboardCtrl'),
         title: 'Dashboard',
         ncyBreadcrumb: {
             label: 'Dashboard'
@@ -54,6 +54,7 @@ function ($stateProvider, $urlRouterProvider, $controllerProvider, $compileProvi
         resolve: loadSequence('sweet-alert', 'oitozero.ngSweetAlert', 'authCtrl')
 	}).state('login.forgot', {
 	    url: '/forgot',
+        resolve: loadSequence('sweet-alert', 'oitozero.ngSweetAlert', 'forgotCtrl'),
 	    templateUrl: "assets/views/login_forgot.html"
 	}).state('login.registration', {
 	    url: '/registration',

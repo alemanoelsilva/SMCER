@@ -11194,15 +11194,26 @@ td.small-width {
   color: #ffffff !important;
 }
 
-.bg-blue-light {
-  background-color: rgba(246, 255, 249, 1);
+.bg-light {
+  background: url("../images/background.jpg") #f7f7f8 !important;
 }
 
-.bg-red-light {
-  background-color: rgba(230, 212, 239, 0.2);
+.bg-gradient {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,f3f3f3+50,ededed+51,ffffff+100;White+Gloss+%232 */
+  background: #ffffff; /* Old browsers */
+  background: -moz-linear-gradient(-45deg,  #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#ffffff), color-stop(50%,#f3f3f3), color-stop(51%,#ededed), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(-45deg,  #ffffff 0%,#f3f3f3 50%,#ededed 51%,#ffffff 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(-45deg,  #ffffff 0%,#f3f3f3 50%,#ededed 51%,#ffffff 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(-45deg,  #ffffff 0%,#f3f3f3 50%,#ededed 51%,#ffffff 100%); /* IE10+ */
+  background: linear-gradient(135deg,  #ffffff 0%,#f3f3f3 50%,#ededed 51%,#ffffff 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
 }
 
-.bg-green-light {
-  background-color: rgba(238, 212, 239, 0.2);
+.big-bold {
+  float: right !important;
+  margin-left: 10px;
+  font-weight: bold;
+  font-size: 20px;
 }
-

@@ -8,7 +8,7 @@
 				<input type="text" class="form-control" datepicker-popup="dd/MM/yyyy" ng-model="end" is-open="endOpened" ng-init="endOpened = false" min-date="start" max-date="endDateSelect" ng-required="true" close-text="Close" ng-click="endOpen($event)" ng-change="updateGrafic()"/>
 			</div>
 		</div>
-		<div class="col-md-6">
+		<div class="col-md-3">
 			<div class="form-group">
 				<label>
 					Circuito
@@ -22,7 +22,22 @@
 					</ui-select-choices>
 				</ui-select>
 			</div>
-		</div>	
+		</div>
+		<div class="col-md-3">
+			<div class="form-group">
+				<label>
+					Exibição
+				</label>
+				<ui-select ng-model="exibicao" ng-change="genGrafico(exibicao)" theme="bootstrap">
+					<ui-select-match placeholder="Selecione">
+						{{$select.selected.nome}}
+					</ui-select-match>
+					<ui-select-choices repeat="item in exibicoes | filter: $select.search" required>
+						<div ng-bind-html="item.nome | highlight: $select.search"></div>
+					</ui-select-choices>
+				</ui-select>
+			</div>
+		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-12">

@@ -19,26 +19,24 @@ app.controller('ChartOpenHourCtrl', ["$scope", "$state", "SweetAlert", "Circuit"
 
 		function gerarGraficoInicial() {
 
-			var date = new Date();
+			$scope.start = new Date("2015/01/01");
+			$scope.end = new Date("2015/12/31");
 
-			var dataInicial = formatDate(date) + " 00:00:00";
-			var dataFinal = formatDate(date) + " 23:59:59";
-
-			$scope.start = formatDate(date);
-			$scope.end = formatDate(date);
+			var dataInicial = formatDate($scope.start) + " " + "00:00:00";
+			var dataFinal = formatDate($scope.end) + " " + "23:59:59";
 
 			HoraFechada.get({
-				dataInicial: dataInicial,
-				dataFinal: dataFinal,
-				circuito: $scope.circuito.id
-			},
-			function(consumo) {
-				$scope.grafic = consumo;
-				grafico();
-			},
-			function(erro) {
-				console.log('erro', erro);
-			});
+					dataInicial: dataInicial,
+					dataFinal: dataFinal,
+					circuito: $scope.circuito.id
+				},
+				function(consumo) {
+					$scope.grafic = consumo;
+					grafico();
+				},
+				function(erro) {
+					console.log('erro', erro);
+				});
 		};
 
 		function searchCircuitos(callback) {
@@ -91,22 +89,22 @@ app.controller('ChartOpenHourCtrl', ["$scope", "$state", "SweetAlert", "Circuit"
 			if (!circuito)
 				circuito = $scope.circuito;
 
-			var dataInicial = formatDate($scope.start) + " " + "00:00:01";
+			var dataInicial = formatDate($scope.start) + " " + "00:00:00";
 			var dataFinal = formatDate($scope.end) + " " + "23:59:59";
 			var circuito = circuito.id;
 
 			HoraFechada.get({
-				dataInicial: dataInicial,
-				dataFinal: dataFinal,
-				circuito: circuito
-			},
-			function(consumo) {
-				$scope.grafic = consumo;
-				grafico();
-			},
-			function(erro) {
-				console.log('erro', erro);
-			});
+					dataInicial: dataInicial,
+					dataFinal: dataFinal,
+					circuito: circuito
+				},
+				function(consumo) {
+					$scope.grafic = consumo;
+					grafico();
+				},
+				function(erro) {
+					console.log('erro', erro);
+				});
 		};
 
 		function grafico() {
@@ -117,12 +115,12 @@ app.controller('ChartOpenHourCtrl', ["$scope", "$state", "SweetAlert", "Circuit"
 				sumWatts += $scope.grafic.data[i];
 			}
 
+
 			if ($scope.grafic.data.length == 0) {
 				SweetAlert.swal("404 -Dados não encontrados", "Tente selecionar um outro período para visualizar o gráfico", "warning");
 			}
 			$scope.data = {
-				//labels: $scope.grafic.label,
-				labels:  $scope.grafic.label,
+				labels: $scope.grafic.label,
 				datasets: [{
 					label: 'Potência total consumida em (Watts): '+sumWatts,
 					fillColor: 'rgba(184,223,234,0.2)',
@@ -190,7 +188,7 @@ app.controller('ChartOpenHourCtrl', ["$scope", "$state", "SweetAlert", "Circuit"
 		};
 
 	}
-	]);
+]);
 
 app.controller('ChartNowCtrl', ["$scope", "Instantaneo", function($scope, Instantaneo) {
 
@@ -200,100 +198,131 @@ app.controller('ChartNowCtrl', ["$scope", "Instantaneo", function($scope, Instan
 
 		setInterval(function () {
 			loadData();
+
 		}, 10000);		
 
 	};
 
 	function loadData() {
 		Instantaneo.query(
-			function(data) {
+				function(data) {
 
-				if ($scope.data.labels.length > 7) {
-					$scope.data.labels.splice(0, 1);
-					$scope.data.datasets[0].data.splice(0, 1);
-					$scope.data.datasets[1].data.splice(0, 1);
-					$scope.data.datasets[2].data.splice(0, 1);
-					$scope.data.datasets[3].data.splice(0, 1);
+					if ($scope.data.labels.length > 7) {
+						$scope.data.labels.splice(0, 1);
+						$scope.data.datasets[0].data.splice(0, 1);
+						$scope.data.datasets[1].data.splice(0, 1);
+						$scope.data.datasets[2].data.splice(0, 1);
+						$scope.data.datasets[3].data.splice(0, 1);
+						$scope.data.datasets[4].data.splice(0, 1);
+						$scope.data.datasets[5].data.splice(0, 1);
+					}
+
+					$scope.data.labels.push(data[0].hora);
+					$scope.data.datasets[0].data.push(data[0].potencia);
+					$scope.data.datasets[1].data.push(data[1].potencia);
+					$scope.data.datasets[2].data.push(data[2].potencia);
+					$scope.data.datasets[3].data.push(data[3].potencia);			
+					$scope.data.datasets[4].data.push(data[4].potencia);
+					$scope.data.datasets[5].data.push(data[5].potencia);
+
+					$scope.data0 = {
+						labels : $scope.data.labels,
+						datasets : new Array($scope.data.datasets[0])
+					};
+					$scope.data1 = {
+						labels : $scope.data.labels,
+						datasets : new Array($scope.data.datasets[1])
+					};
+					$scope.data2 = {
+						labels : $scope.data.labels,
+						datasets : new Array($scope.data.datasets[2])
+					};
+					$scope.data3 = {
+						labels : $scope.data.labels,
+						datasets : new Array($scope.data.datasets[3])
+					};
+					$scope.data4 = {
+						labels : $scope.data.labels,
+						datasets : new Array($scope.data.datasets[4])
+					};
+					$scope.data5 = {
+						labels : $scope.data.labels,
+						datasets : new Array($scope.data.datasets[5])
+					};
+					
+				},
+				function(erro) {
+					console.log('erro', erro);
 				}
-
-				$scope.data.labels.push(data[0].hora);
-				$scope.data.datasets[0].data.push(data[0].potencia);
-				$scope.data.datasets[1].data.push(data[1].potencia);
-				$scope.data.datasets[2].data.push(data[2].potencia);
-				$scope.data.datasets[3].data.push(data[3].potencia);			
-
-				$scope.data0 = {
-					labels : $scope.data.labels,
-					datasets : new Array($scope.data.datasets[0])
-				};
-				$scope.data1 = {
-					labels : $scope.data.labels,
-					datasets : new Array($scope.data.datasets[1])
-				};
-				$scope.data2 = {
-					labels : $scope.data.labels,
-					datasets : new Array($scope.data.datasets[2])
-				};
-				$scope.data3 = {
-					labels : $scope.data.labels,
-					datasets : new Array($scope.data.datasets[3])
-				};
-
-			},
-			function(erro) {
-				console.log('erro', erro);
-			}
 			);
-};
+	};
 
-$scope.init();
+	$scope.init();
 
-$scope.data = {
-	labels: [""],
-	datasets: [{
-		label: 'Circuito 1',
-		fillColor: 'rgba(255,129,129,0.1)',
-		strokeColor: 'rgba(255,129,129,1)',
-		pointColor: 'rgba(255,129,129,1)',
-		pointStrokeColor: '#fff',
-		pointHighlightFill: '#fff',
-		pointHighlightStroke: 'rgba(255,129,129,1)',
-		data: [0]
-	}, {
-		label: 'Circuito 2',
-		fillColor: 'rgba(95,238,95,0.1)',
-		strokeColor: 'rgba(95,238,95,1)',
-		pointColor: 'rgba(95,238,95,1)',
-		pointStrokeColor: '#fff',
-		pointHighlightFill: '#fff',
-		pointHighlightStroke: 'rgba(95,238,95,1)',
-		data: [0]
-	}, {
-		label: 'Circuito 3',
-		fillColor: 'rgba(55,67,236,0.1)',
-		strokeColor: 'rgba(55,67,236,1)',
-		pointColor: 'rgba(55,67,236,1)',
-		pointStrokeColor: '#fff',
-		pointHighlightFill: '#fff',
-		pointHighlightStroke: 'rgba(55,67,236,1)',
-		data: [0]
-	}, {
-		label: 'Circuito 4',
-		fillColor: 'rgba(151,187,205,0.1)',
-		strokeColor: 'rgba(151,187,205,1)',
-		pointColor: 'rgba(151,187,205,1)',
-		pointStrokeColor: '#fff',
-		pointHighlightFill: '#fff',
-		pointHighlightStroke: 'rgba(151,187,205,1)',
-		data: [0]
-	}]
-};
+	$scope.data = {
+		labels: [""],
+		datasets: [{
+			label: 'Circuito 1',
+			fillColor: 'rgba(255,129,129,0.1)',
+			strokeColor: 'rgba(255,129,129,1)',
+			pointColor: 'rgba(255,129,129,1)',
+			pointStrokeColor: '#fff',
+			pointHighlightFill: '#fff',
+			pointHighlightStroke: 'rgba(255,129,129,1)',
+			data: [0]
+		}, {
+			label: 'Circuito 2',
+			fillColor: 'rgba(95,238,95,0.1)',
+			strokeColor: 'rgba(95,238,95,1)',
+			pointColor: 'rgba(95,238,95,1)',
+			pointStrokeColor: '#fff',
+			pointHighlightFill: '#fff',
+			pointHighlightStroke: 'rgba(95,238,95,1)',
+			data: [0]
+		}, {
+			label: 'Circuito 3',
+			fillColor: 'rgba(55,67,236,0.1)',
+			strokeColor: 'rgba(55,67,236,1)',
+			pointColor: 'rgba(55,67,236,1)',
+			pointStrokeColor: '#fff',
+			pointHighlightFill: '#fff',
+			pointHighlightStroke: 'rgba(55,67,236,1)',
+			data: [0]
+		}, {
+			label: 'Circuito 4',
+			fillColor: 'rgba(151,187,205,0.1)',
+			strokeColor: 'rgba(151,187,205,1)',
+			pointColor: 'rgba(151,187,205,1)',
+			pointStrokeColor: '#fff',
+			pointHighlightFill: '#fff',
+			pointHighlightStroke: 'rgba(151,187,205,1)',
+			data: [0]
+		}, {
+			label: 'Circuito 5',
+			fillColor: 'rgba(55,236,236,0.1)',
+			strokeColor: 'rgba(55,236,236,1)',
+			pointColor: 'rgba(55,236,236,1)',
+			pointStrokeColor: '#fff',
+			pointHighlightFill: '#fff',
+			pointHighlightStroke: 'rgba(55,236,236,1)',
+			data: [0]
+		}, {
+			label: 'Circuito 6',
+			fillColor: 'rgba(194,55,236,0.1)',
+			strokeColor: 'rgba(194,55,236,1)',
+			pointColor: 'rgba(194,55,236,1)',
+			pointStrokeColor: '#fff',
+			pointHighlightFill: '#fff',
+			pointHighlightStroke: 'rgba(194,55,236,1)',
+			data: [0]
+		}]
+	};
 
-$scope.options = {
+	$scope.options = {
 
-	animation: true,
+		animation: true,
 
-	animationSteps : 5,
+		animationSteps : 5,
 
 		// Sets the chart to be responsive
 		responsive: true,

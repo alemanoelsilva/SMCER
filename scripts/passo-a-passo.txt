@@ -1,0 +1,7 @@
+1 - Adicione a sua conta de usuário ao grupo sudo através do comando: sudo adduser usuario sudo.
+1 - Retire a senha de usuário do SUDO. Para isso digite "sudo nano /etc/sudoers" e altere a linha que contém %sudo para %sudo ALL=NOPASSWD: ALL. Depois faça logout e depois login.
+2 - Crie uma pasta chamada Projects no diretório do usuário. ~/Projects.
+3 - Dentro da pasta Projects, faça clone do projeto: git clone https://username:password@github.com/vinicius91carvalho/SMCER.git
+4 - Adicione no arquivo ~/.bashrc o seguinte comando: ~/Projects/SMCER/scripts/SMCER
+	4.1 - Caso o arquivo ~/.bashrc não exista, crie. 
+5 - Reinicie a máquina.

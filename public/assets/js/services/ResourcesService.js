@@ -53,7 +53,7 @@ angular.module('SMCERApp').factory('Instantaneo', function($resource) {
 angular.module('SMCERApp').factory('User', function($resource) {
     return $resource('/usuarios/:id', {id: '@id'}, {
         'update': { method: 'PUT', isArray: true },   
-        'getUserLogged': { method: 'GET', url: '/usuarioLogado/:nome' ,params: { nome: '@nome' } }
-     
+        'getUserLogged': { method: 'GET', url: '/usuarioLogado/:nome' ,params: { nome: '@nome' } },
+        'forgot' : {method : 'GET', url: '/usuarios/email/forgot/:email', params : {email : '@email'}}
     });  
 }); 
