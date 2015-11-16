@@ -29,10 +29,10 @@ app.controller('ChartOpenHourCtrl', ["$scope", "$state", "SweetAlert", "Circuit"
 			$scope.start = new Date();
 			$scope.end = new Date();
 
-			var dataInicial = formatDate($scope.start) + " " + "01:00:01";
+			var dataInicial = formatDate($scope.start) + " " + "00:00:01";
 			var dataFinalCustom = new Date($scope.end);
 			dataFinalCustom.setDate(dataFinalCustom.getDate()+1);
-			var dataFinal = formatDate(dataFinalCustom) + " " + "01:00:01";
+			var dataFinal = formatDate(dataFinalCustom) + " " + "23:59:59";
 
 			HoraFechada.get({
 					dataInicial: dataInicial,
@@ -103,10 +103,10 @@ app.controller('ChartOpenHourCtrl', ["$scope", "$state", "SweetAlert", "Circuit"
 			if (!circuito)
 				circuito = $scope.circuito;
 
-			var dataInicial = formatDate($scope.start) + " " + "01:00:01";
+			var dataInicial = formatDate($scope.start) + " " + "00:00:01";
 			var dataFinalCustom = new Date($scope.end);
-			dataFinalCustom.setDate(dataFinalCustom.getDate()+1);
-			var dataFinal = formatDate(dataFinalCustom) + " " + "02:00:01";
+			dataFinalCustom.setDate(dataFinalCustom.getDate());
+			var dataFinal = formatDate(dataFinalCustom) + " " + "23:59:59";
 			var circuito = circuito.id;
 
 			var valid = validaExibicao;
@@ -155,14 +155,17 @@ app.controller('ChartOpenHourCtrl', ["$scope", "$state", "SweetAlert", "Circuit"
 
 				for (var i = 0; i < $scope.grafic.label.length; i++) {
 
-					var data = moment($scope.grafic.label[i], "DD-MM-YYYY HH:mm:ss").toDate();
+					var check = moment($scope.grafic.label[i], "DD-MM-YYYY HH:mm:ss");
 
-					if (data.getDate() == dia) {
+					var month = check.format('M');
+					var day   = check.format('D');
+
+					if (day == dia) {
 						consumo.data[consumo.data.length-1] += $scope.grafic.data[i];
 					} else {
-						consumo.label.push(data.getDate()+"/"+data.getMonth());
+						consumo.label.push(day+"/"+month);
 						consumo.data.push($scope.grafic.data[i]);
-						dia = data.getDate();
+						dia = day;
 					}
 
 				}
@@ -418,7 +421,7 @@ app.controller('ChartNowCtrl', ["$scope", "Instantaneo", "Circuit", function($sc
 		pointDotStrokeWidth: 1,
 
 		//Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-		pointHitDetectionRadius: 5,
+		pointHitDetectionRadius: 20,
 
 		//Boolean - Whether to show a stroke for datasets
 		datasetStroke: true,

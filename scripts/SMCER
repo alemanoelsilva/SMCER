@@ -1,6 +1,15 @@
-cd ~/Projects/SMCER;
-git pull
-bower install
-sudo npm install -g
+
+wget -q --tries=10 --timeout=20 --spider http://google.com
+if [[ $? -eq 0 ]]; then
+        echo "Online"
+	cd ~/Projects/SMCER;
+	git pull
+	npm install
+	sudo npm install -g
+	bower install
+else
+        echo "Offline"
+fi
+
 sudo killall node
 nodemon server.js

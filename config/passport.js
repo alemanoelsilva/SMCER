@@ -10,7 +10,8 @@ module.exports = function() {
 
     passport.use(new LocalStrategy({
         usernameField : 'login',
-        passwordField : 'password'
+        passwordField : 'password',
+        session : true
     },
     function(login, password, done) {
           
@@ -19,6 +20,7 @@ module.exports = function() {
         User.findOne( { where: { nome: login, senha : password } })
         .then(function (success){
             console.log('Usuário autenticado com sucesso!');
+            console.log(success);
             return done(null, success);
         }, function (error){
             console.error("Erro no login: "+error);

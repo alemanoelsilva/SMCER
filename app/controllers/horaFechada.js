@@ -1,5 +1,7 @@
 var connection = require('../../config/database');
 
+var moment = require("moment");
+
 function formatDate(data){
 	var string = String(data)
 	var arrayAll = string.split(" ");
@@ -40,6 +42,7 @@ module.exports =  function (app){
 			var _id = req.params.circuito,
 				dataInicial = req.params.dataInicial,
 				dataFinal = req.params.dataFinal;
+				
 			HoraFechada.findAll( 
 				{ 
 					include: [{
@@ -47,7 +50,10 @@ module.exports =  function (app){
 						, where: { id: _id }
 					}],
 					where: connection.and({ 
-						dataHora: { $between: [dataInicial, dataFinal] } 
+						dataHora: {
+						   	$gte: moment(dataInicial, "YYYY-MM-DD HH:mm:ss").toDate(),
+						  	$lte: moment(dataFinal, "YYYY-MM-DD HH:mm:ss").toDate()    
+						}
 					})
 				}
 			)
