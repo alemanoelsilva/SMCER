@@ -29,10 +29,11 @@ app.controller('ChartOpenHourCtrl', ["$scope", "$state", "SweetAlert", "Circuit"
 			$scope.start = new Date();
 			$scope.end = new Date();
 
-			var dataInicial = formatDate($scope.start) + " " + "00:00:01";
-			var dataFinalCustom = new Date($scope.end);
-			dataFinalCustom.setDate(dataFinalCustom.getDate()+1);
-			var dataFinal = formatDate(dataFinalCustom) + " " + "23:59:59";
+			var dataStartCustom = new Date($scope.start);
+			dataStartCustom.setDate(dataStartCustom.getDate()-1);
+
+			var dataInicial = formatDate(dataStartCustom) + " " + "00:00:00";
+			var dataFinal = formatDate($scope.end) + " " + "23:59:59";
 
 			HoraFechada.get({
 					dataInicial: dataInicial,
@@ -103,10 +104,12 @@ app.controller('ChartOpenHourCtrl', ["$scope", "$state", "SweetAlert", "Circuit"
 			if (!circuito)
 				circuito = $scope.circuito;
 
-			var dataInicial = formatDate($scope.start) + " " + "00:00:01";
-			var dataFinalCustom = new Date($scope.end);
-			dataFinalCustom.setDate(dataFinalCustom.getDate());
-			var dataFinal = formatDate(dataFinalCustom) + " " + "23:59:59";
+			var dataStartCustom = new Date($scope.start);
+			dataStartCustom.setDate(dataStartCustom.getDate()-1);
+
+			var dataInicial = formatDate(dataStartCustom) + " " + "23:59:59";
+			
+			var dataFinal = formatDate($scope.end) + " " + "23:59:59";
 			var circuito = circuito.id;
 
 			var valid = validaExibicao;
